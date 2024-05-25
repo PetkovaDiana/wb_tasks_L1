@@ -13,42 +13,31 @@ import (
 
 // Функция для вычисления квадрата числа и отправки результата в канал,
 // канал только для записи
-func square(num int, wg *sync.WaitGroup, results chan<- int) {
-	// Уменьшаем счетчик ожидания по завершению
-	defer wg.Done()
+func squares(wg *sync.WaitGroup, numbers []int) <-chan int {
+	results := make(chan int, len(numbers))
 
-	// Записывает результат в канал
-	results <- num * num
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _, num := range numbers {
+			results <- num * num
+		}
+		close(results)
+	}()
+
+	return results
 }
 
 func main() {
 	// Массив чисел
 	numbers := []int{2, 4, 6, 8, 10}
 
-	// Создаем буферезированный канал, который принимает данные типа int,
-	// Размер буфера равен длине массиву
-	results := make(chan int, len(numbers))
+	wg := new(sync.WaitGroup)
 
-	// Группа ожидания для синхронизации горутин
-	var wg sync.WaitGroup
-
-	// Запуск горутин для вычисления квадратов чисел
-	for _, num := range numbers {
-		wg.Add(1)
-		go square(num, &wg, results)
-	}
-
-	// Закрытие канала после завершения всех горутин
-	go func() {
-		wg.Wait()
-		close(results)
-	}()
+	results := squares(wg, numbers)
 
 	// Чтение результатов из канала и вывод в stdout
 	for result := range results {
 		fmt.Println(result)
 	}
 }
-
-// Использование буфер.канала в данном примере обеспечивает безопасное выполнение без блокировок и дедлоков.
-// Цикл range - используется для чтения значений из канала. Чтение просиходит до тех пор, пока канал не будет закрыт
