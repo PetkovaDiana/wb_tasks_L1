@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"reflect"
 )
 
 /*
@@ -14,10 +13,10 @@ func main() {
 	y := "Hello world"
 	i := make([]int, 10)
 
-	xType := reflect.TypeOf(x)
-	yType := reflect.TypeOf(y)
-	iType := reflect.TypeOf(i)
+	//xType := reflect.TypeOf(x)
+	//yType := reflect.TypeOf(y)
+	//iType := reflect.TypeOf(i)
 
-	fmt.Printf("%T: %s\n%T: %s\n%T: %s\n", xType, xType, yType, yType, iType, iType)
+	fmt.Printf("%[1]T: %[1]d\n%[2]T: %[2]s\n%[3]T: %[3]v\n", x, y, i)
 
 }
