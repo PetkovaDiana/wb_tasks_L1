@@ -2,6 +2,11 @@ package main
 
 import "fmt"
 
+/*
+Имеется последовательность строк - (cat, cat, dog, cat, tree) создать для нее собственное множество.
+
+*/
+
 func set(s []string) []string {
 	var res []string
 	setOfString := make(map[string]string, len(s))

@@ -23,7 +23,7 @@ func main() {
 }
 
 func reverseWords(str string) string {
-
+	//разбиваем строку на подстроки по пробельным символам и возвращает срез этих подстрок
 	words := strings.Fields(str)
 
 	left, right := 0, len(words)-1
@@ -34,5 +34,6 @@ func reverseWords(str string) string {
 		right--
 	}
 
+	// объединяем их
 	return strings.Join(words, " ")
 }
